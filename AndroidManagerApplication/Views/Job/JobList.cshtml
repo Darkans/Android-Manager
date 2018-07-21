@@ -1,0 +1,90 @@
+﻿@using AndroidManagerApplication.Models.Entities
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>JobList</title>
+</head>
+<body>
+	<div class="container pt-3 w-100">
+		<h3>Job list</h3>
+		<table class="table table-hover">
+			<thead class="thead-light text-center">
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Describtion</th>
+					<th scope="col">Complexity</th>
+					<th scope="col">Androids</th>
+					<th scope="col">Action</th>
+				</tr>
+			</thead>
+			<tbody class="text-center">
+				@foreach (var job in ViewBag.JobList)
+				{
+					<tr>
+						<td>@job.Name</td>
+						<td>@job.Describtion</td>
+						<td>@job.Complexity</td>
+						<td>
+							@Html.ActionLink(
+								"Android list",
+								"AssignedAndroids",
+								"Job",
+								new { jobId = (job as Job).Id } ,
+								new { @class = "partRef" }
+							)
+						</td>
+						<td>
+							@Html.ActionLink(
+								"Delete", 
+								"DeleteJob", 
+								"Job", 
+								new { jobId = (job as Job).Id }, 
+								new { @class = "btn" }
+							)
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+
+
+	<div id="modDialog" class="modal fade">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Assigned android list</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="dialogContent">
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	@section scripts
+	{
+
+		<script type="text/javascript">
+
+			$(function () {
+				$.ajaxSetup({ cache: false });
+				$(".partRef").click(function (e) {
+
+					e.preventDefault();
+					$.get(this.href, function (data) {
+						$('#dialogContent').html(data);
+						$('#modDialog').modal('show');
+					});
+				});
+			})
+		</script>
+	}
+</body>
+</html>

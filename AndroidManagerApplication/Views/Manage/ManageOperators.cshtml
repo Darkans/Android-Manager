@@ -1,0 +1,53 @@
+﻿@model List<AndroidManagerApplication.Models.Entities.ApplicationUser>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>ManageOperators</title>
+</head>
+<body>
+	<div class="container pt-3">
+		@if (Model.Count() == 0)
+		{
+			<h3 class="text-danger">There is no operators</h3>
+		}
+		else
+		{
+			<table class="table table-bordered table-hover table-sm">
+				<thead class="thead-light text-center">
+					<tr>
+						<th scope="col">Id</th>
+						<th scope="col">E-Mail</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody class="text-center">
+					@foreach (var user in Model)
+					{
+						var authenticatedUser = (User != null) & (user.UserName == User.Identity.Name);
+						<tr>
+							<td class="align-middle">@Html.Label(user.Id)</td>
+							<td class="align-middle">@Html.Label("", user.Email)</td>
+							@if (authenticatedUser)
+							{
+								<td>
+									<p class="btn disabled text-info">Logged in</p>
+								</td>
+							}
+							else
+							{
+								<td>@Html.ActionLink("Delete", "DeleteOperator", "Manage", new { operatorId = user.Id }, new { @class = "btn" })</td>
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+	</div>
+	<div class="container pt-3">
+		@Html.ActionLink("Create operator", "NewOperator", "Manage", new { }, new { @class= "btn btn-outline-primary w-100" })
+	</div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<AndroidManagerApplication.Models.Entities.Android>
+@using AndroidManagerApplication.Models.Entities
+@{
+	const int COLUMNS = 4;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Android List</title>
+</head>
+<body>
+
+	@{
+		int itemNumber = 0;
+		while (itemNumber < Model.Count())
+		{
+			<div class="row pt-3">
+				@while (itemNumber < Model.Count())
+				{
+					var android = Model.ElementAt(itemNumber);
+
+					var imgSrc = String.Format("data:{0};base64,{1}", "image/jpg", android.Avatar != null ? android.Avatar.Base64 : "");
+					var jobName = android.CurrentJob != null ? android.CurrentJob.Name : "N/A";
+					var warningClass = android.Available? "" : " bg-warning";
+
+					<div class="col-3 pt-3">
+						<div class="card">
+							<img class="card-img-top" src="@imgSrc" width="200" height="200" />
+							<h5 class="card-header bg-dark text-light text-center">@android.Name</h5>
+							<div class="card-body @warningClass">
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item @warningClass">Reliability - @android.Reliability</li>
+									<li class="list-group-item @warningClass">Job - @jobName</li>
+									@if ((android.Skills != null) & (android.Skills.Count() > 0))
+									{
+										<li class="list-group-item @warningClass">
+											Skills:
+											@foreach (var skill in android.Skills)
+											{
+												<span class="badge badge-dark">@skill.Name</span>
+											}
+										</li>
+									}
+									@if (android.Available)
+									{
+										<li class="list-group-item text-success text-center">Android is available</li>
+									}
+									else
+									{
+										<li class="list-group-item text-danger text-center @warningClass">Need reclaim</li>
+									}
+								</ul>
+							</div>
+							<div class="card-footer text-danger @warningClass">
+								@Html.ActionLink("Delete", "DeleteAndroid", "Android", new { androidId = android.Id }, new { @class = "btn btn-danger w-100" })
+							</div>
+						</div>
+					</div>
+
+					itemNumber++;
+					if (itemNumber % 4 == COLUMNS) { break; }
+				}
+			</div>
+		}
+		if (Model.Count() == 0)
+		{
+			<div class="text-center pt-3">
+				<h2 class="text-danger">There is no androids...</h2>
+			</div>
+		}
+	}
+</body>
+</html>

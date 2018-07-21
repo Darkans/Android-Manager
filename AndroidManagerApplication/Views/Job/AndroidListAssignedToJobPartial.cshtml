@@ -1,0 +1,92 @@
+﻿@model AndroidManagerApplication.Models.ViewModels.AndroidsAssignedToJobViewModel
+
+@if ((Model == null) || (Model.AndroidList.Count() == 0))
+{
+	<div class="text-black-50 text-black-50">
+		<p class="text-center">No androids</p>
+	</div>
+}
+else
+{
+	<table class="table table-hover table-sm">
+		<thead class="thead-light text-center">
+			<tr>
+				<th scope="col">Image</th>
+				<th scope="col">Name</th>
+				<th scope="col">Current job</th>
+				<th scope="col">Reliability</th>
+				<th scope="col">Status</th>
+				<th scope="col">Action</th>
+			</tr>
+		</thead>
+		<tbody class="text-center">
+			@foreach (var android in Model.AndroidList)
+			{
+				var imgSrc = String.Format("data:{0};base64,{1}", "image/jpg", android.Avatar.Base64);
+				string tableClass = "table-success";
+				string disableAttribute = "";
+				string textAttribute = "";
+
+				if (!android.Available)
+				{
+					tableClass = "table-danger";
+					disableAttribute = "disabled";
+					textAttribute = "text-muted";
+				}
+
+				<tr class="@tableClass">
+					<td class="align-middle"><img src=@imgSrc width="32" height="32" /></td>
+					<td class="align-middle">@Html.Label(android.Name, new { @class = textAttribute })</td>
+					<td class="align-middle">@Html.Label(android.CurrentJob != null ? android.CurrentJob.Name : "N/A", new { @class = textAttribute })</td>
+					<td class="align-middle">@Html.Label(android.Reliability.ToString(), new { @class = textAttribute })</td>
+					<td class="align-middle">
+						@if (android.Available)
+						{
+							<label class="text-success">Available</label>
+						}
+						else
+						{
+							<label class="text-danger">Need reclaim</label>
+						}
+					</td>
+					<td class="align-middle">
+						@if (Model.IsAndroidAssigned(android))
+						{
+							@Ajax.ActionLink("Unassign",
+											 "UnassignAndroidToJob",
+											 "Job",
+											 new { androidId = android.Id },
+											 new AjaxOptions { UpdateTargetId = "dialogContent" },
+											 new { @class = "btn " + disableAttribute, disable = disableAttribute }
+							)
+						}
+						else
+						{
+							@Ajax.ActionLink("Assign",
+											 "AssignAndroidToJob",
+											 "Job",
+											 new { androidId = android.Id, jobId = Model.CurrentJob.Id },
+											 new AjaxOptions { UpdateTargetId = "dialogContent" },
+											 new { @class = "btn " + disableAttribute, disable = disableAttribute }
+							)
+						}
+					</td>
+				</tr>
+			}
+		</tbody>
+
+	</table>
+}
+
+@if (ViewBag.Errors != null)
+{
+	<div class="container">
+		<label>Errors:</label>
+		<ul>
+			@foreach (var error in (ViewBag.Errors as List<string>))
+			{
+				<li>@error</li>
+			}
+		</ul>
+	</div>
+}

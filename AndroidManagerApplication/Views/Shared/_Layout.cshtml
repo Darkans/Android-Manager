@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+	<nav class="navbar navbar-dark bg-dark fixed-top navbar-expand-lg">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				@Html.ActionLink("Android manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Jobs
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							@Html.ActionLink("List", "JobList", "Job", new { }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Add new", "NewJob", "Job", new { }, new { @class = "dropdown-item" })
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Androids
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							@Html.ActionLink("List", "AndroidList", "Android", new { }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Add new", "NewAndroid", "Android", new { }, new { @class = "dropdown-item" })
+						</div>
+					</li>
+					<li class="nav-item">
+						@Html.ActionLink("Manage operators", "ManageOperators", "Manage", new { }, new { @class = "nav-link" })
+					</li>
+				</ul>
+				@Html.Partial("_LoginPartial")
+			</div>
+		</div>
+	</nav>
+
+	<div class="container body-content">
+		@RenderBody()
+	</div>
+
+	@if (ViewBag.Errors != null)
+	{
+		<div class="container">
+			<label>Errors:</label>
+			<ul>
+				@foreach (var error in (ViewBag.Errors as List<string>))
+				{
+					<li>@error</li>
+				}
+			</ul>
+		</div>
+	}
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.js")
+	@RenderSection("scripts", required: false)
+</body>
+</html>

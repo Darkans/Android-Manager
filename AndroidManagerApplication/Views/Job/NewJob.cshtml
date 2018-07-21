@@ -1,0 +1,35 @@
+﻿@model AndroidManagerApplication.Models.ViewModels.JobViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>New Job</title>
+</head>
+<body>
+	<div class="container pt-3">
+		@using (Html.BeginForm("CreateJob", "Job", FormMethod.Post, new { encType = "multipart/form-data" }))
+		{
+			<div class="form-group">
+				@Html.LabelFor(m => m.Name) <br />
+				@Html.TextAreaFor(m => m.Name, new { @class = "form-control", @placeholder = "Enter name" })
+				<small class="form-text text-muted">Use only alpha-numeric characters</small>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.Describtion) <br />
+				@Html.TextAreaFor(m => m.Describtion, new { @class = "form-control", @placeholder = "Enter describtion" })
+				<small class="form-text text-muted">Maximum length is 255 characters</small>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.Complexity) <br />
+				@Html.TextAreaFor(m => m.Complexity, new { @class = "form-control", @placeholder = "Enter reliability" })
+			</div>
+			<input type="submit" class="btn" />
+		}
+		<div class="text-danger pt-3">
+			@Html.ValidationSummary()
+		</div>
+	</div>
+</body>
+</html>

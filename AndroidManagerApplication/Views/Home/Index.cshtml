@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container pt-3">
+	<h3>If you are not logged in then...</h3>
+	<p>
+		@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })
+		or
+		@Html.ActionLink("Login", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })
+	</p>
+
+	<h3>Get started</h3>
+	<p>There are 3 sections: Jobs, Androids and Manage operators</p>
+
+	<h3>In Jobs section you can:</h3>
+	<ul>
+		<li>Create new job</li>
+		<li>View the list of existing jobs</li>
+		<li>View the list of assigned androids to specific job</li>
+		<li>Assign of unassign androids to specific job</li>
+	</ul>
+
+	<h3>In Androids section you can:</h3>
+	<ul>
+		<li>Create new android</li>
+		<li>Delete androids</li>
+		<li>View the list of existing androids and they properties</li>
+	</ul>
+
+	<h3>In Manage operators section you can:</h3>
+	<ul>
+		<li>Create new operator</li>
+		<li>Delete operators</li>
+		<li>View the list of existing operators</li>
+	</ul>
+</div>
